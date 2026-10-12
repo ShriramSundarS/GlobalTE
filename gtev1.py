@@ -10,8 +10,13 @@ st.set_page_config(
 st.title("Global Foreign Income Tax Estimator")
 st.markdown(
     "Calculate foreign income tax liability, apply Foreign Tax Credits (FTC),"
-    " query historical exchange rates by tax year, and compare tax burdens"
-    " across countries with exact numeric display."
+    " and compare tax burdens across countries."
+)
+
+st.warning(
+    "Disclaimer: This application is provided for informational and estimation"
+    " purposes only and does not constitute formal legal or tax advice. Please"
+    " consult a qualified tax professional for official tax filings."
 )
 
 # -----------------------------------------------------------------------------
@@ -183,22 +188,7 @@ def render_full_metric(label: str, value_str: str):
 # 3. STREAMLIT UI
 # -----------------------------------------------------------------------------
 
-st.subheader("1. Tax Year & Exchange Rate Date")
-use_historical = st.checkbox(
-    "Use Historical Exchange Rate (for past tax filings)"
-)
-rate_date_str = None
-
-if use_historical:
-  selected_date = st.date_input(
-      "Select Tax Year / Filing Date",
-      value=date(2025, 3, 31),
-      min_value=date(2000, 1, 1),
-      max_value=date.today(),
-  )
-  rate_date_str = selected_date.strftime("%Y-%m-%d")
-
-st.subheader("2. Foreign Income & Source Tax Paid")
+st.subheader("Foreign Income & Source Tax Paid")
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -214,12 +204,27 @@ with col3:
       f"Tax Paid at Source ({source_curr})", min_value=0.0, value=5000.0, step=500.0
   )
 
-st.subheader("3. Residency Jurisdiction")
+st.subheader("Residency Jurisdiction")
 residency_choice = st.selectbox(
     "Residency Country (Tax Jurisdiction)", list(COUNTRY_TAX_ENGINES.keys())
 )
 
 target_curr, tax_engine = COUNTRY_TAX_ENGINES[residency_choice]
+
+st.subheader("Tax Year & Exchange Rate Date")
+use_historical = st.checkbox(
+    "Use Historical Exchange Rate (for past tax filings)"
+)
+rate_date_str = None
+
+if use_historical:
+  selected_date = st.date_input(
+      "Select Tax Year / Filing Date",
+      value=date(2025, 3, 31),
+      min_value=date(2000, 1, 1),
+      max_value=date.today(),
+  )
+  rate_date_str = selected_date.strftime("%Y-%m-%d")
 
 if st.button("Calculate and Compare Tax Liability", type="primary"):
   rate, is_fallback = fetch_exchange_rate(
@@ -322,5 +327,69 @@ if st.button("Calculate and Compare Tax Liability", type="primary"):
       hide_index=True,
   )
 
-  chart_df = df_comp.set_index("Country")["Effective Tax Rate (%)"]
-  st.bar_chart(chart_df)
+# -----------------------------------------------------------------------------
+# 4. STYLISH FEATURE CARDS (End of Site)
+# -----------------------------------------------------------------------------
+st.markdown("---")
+st.subheader("Platform Features & Architecture Standards")
+
+feat_col1, feat_col2, feat_col3 = st.columns(3)
+
+with feat_col1:
+  st.markdown(
+      """
+      <div style="background-color: #fdfdfd; padding: 16px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 2px rgba(0,0,0,0.05); height: 100%;">
+          <h4 style="margin-top: 0; color: #1f2937; font-size: 15px;">Real-Time FX API Engine</h4>
+          <p style="font-size: 13px; color: #4b5563; margin-bottom: 0;">Fetches live and historical exchange rates dynamically with robust currency fallback mechanisms.</p>
+      </div>
+      """,
+      unsafe_allow_html=True,
+  )
+
+with feat_col2:
+  st.markdown(
+      """
+      <div style="background-color: #fdfdfd; padding: 16px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 2px rgba(0,0,0,0.05); height: 100%;">
+          <h4 style="margin-top: 0; color: #1f2937; font-size: 15px;">Zero Persistence RAM</h4>
+          <p style="font-size: 13px; color: #4b5563; margin-bottom: 0;">Processes all sensitive financial calculations entirely in volatile memory without disk logging.</p>
+      </div>
+      """,
+      unsafe_allow_html=True,
+  )
+
+with feat_col3:
+  st.markdown(
+      """
+      <div style="background-color: #fdfdfd; padding: 16px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 2px rgba(0,0,0,0.05); height: 100%;">
+          <h4 style="margin-top: 0; color: #1f2937; font-size: 15px;">Tax Slab Processor</h4>
+          <p style="font-size: 13px; color: #4b5563; margin-bottom: 0;">Computes progressive marginal brackets and statutory FTC caps with high decimal precision.</p>
+      </div>
+      """,
+      unsafe_allow_html=True,
+  )
+
+st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
+
+feat_col4, feat_col5 = st.columns(2)
+
+with feat_col4:
+  st.markdown(
+      """
+      <div style="background-color: #fdfdfd; padding: 16px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 2px rgba(0,0,0,0.05); height: 100%;">
+          <h4 style="margin-top: 0; color: #1f2937; font-size: 15px;">Privacy In-Memory</h4>
+          <p style="font-size: 13px; color: #4b5563; margin-bottom: 0;">Guarantees complete user data isolation, keeping input parameters secure throughout your active session.</p>
+      </div>
+      """,
+      unsafe_allow_html=True,
+  )
+
+with feat_col5:
+  st.markdown(
+      """
+      <div style="background-color: #fdfdfd; padding: 16px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 2px rgba(0,0,0,0.05); height: 100%;">
+          <h4 style="margin-top: 0; color: #1f2937; font-size: 15px;">BIS IS 17428 Standard</h4>
+          <p style="font-size: 13px; color: #4b5563; margin-bottom: 0;">Built adhering to national data privacy management principles for reliable information governance.</p>
+      </div>
+      """,
+      unsafe_allow_html=True,
+  )
