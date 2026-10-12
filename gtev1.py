@@ -420,19 +420,19 @@ if a==1:
     <div class="row">
     <div class="s" id="red" >
         <h3 style="text-align: center;">Real-Time FX API</h3>
-        <p style="size:34px" >Live and historical exchange rate integration with fallback resilience</p>  
+        <center><p style="size:34px" >Live and historical exchange rate integration with fallback resilience</p> </center> 
     </div>
     <div class="s" id="yellow">
         <h3 style="text-align: center;">Zero Persistence</h3>
-        <p style="size:34px">Executes calculations entirely in volatile RAM without disk logs.</p>  
+        <center><p style="size:34px">Executes calculations entirely in volatile RAM without disk logs.</p>  </center>
     </div>
     <div class="s" id="green">
         <h3 style="text-align: center;">Tax Slab Processor</h3>
-        <p style="size:34px">Computes progressive tax brackets and FTC caps with precision.</p>  
+        <center><p style="size:34px">Computes progressive tax brackets and FTC caps with precision.</p>  </center>
     </div>
     <div class="s" id="blue">
         <h3 style="text-align: center;">Privacy In-Memory</h3>
-        <p style="size:34px">Complete user data isolation securely bound to active sessions.</p>  
+        <center><p style="size:34px">Complete user data isolation securely bound to active sessions.</p>  </center>
     </div>
 
     </div>
